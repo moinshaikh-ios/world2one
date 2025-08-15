@@ -1,0 +1,6 @@
+framework module Pods_World2One_World2OneUITests {
+  umbrella header "Pods-World2One-World2OneUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
