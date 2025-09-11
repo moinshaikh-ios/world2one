@@ -122,11 +122,19 @@ extension MagazinesDetailViewController {
                 self.descriptionLbl.text = res.description
                 
                 if res.isAvailableInFuture == true {
-                    self.timeLeftToBuyLbl.text = Utility().formatTime(seconds: res.availableIn ?? 0)
-                    self.timeLeftToBuyLbl.textColor = .red
-                    self.timeLeftToBuyLblKey.textColor = .red.withAlphaComponent(0.8)
-                    self.timeLeftToBuyLblKey.text = "Available In"
-                    self.goToHide.isHidden = true
+                    if String(res.availableIn ?? 0).first == "-" {
+                        self.timeLeftToBuyLbl.text = Utility().formatTime(seconds: res.timeLeft ?? 0)
+                        self.timeLeftToBuyLbl.textColor = UIColor(hex: "212D40")
+                        self.timeLeftToBuyLblKey.textColor = UIColor(hex: "212D40")?.withAlphaComponent(0.8)
+                        self.timeLeftToBuyLblKey.text = "Time Left to Buy"
+                        self.goToHide.isHidden = false
+                    }else {
+                        self.timeLeftToBuyLbl.text = Utility().formatTime(seconds: res.availableIn ?? 0)
+                        self.timeLeftToBuyLbl.textColor = .red
+                        self.timeLeftToBuyLblKey.textColor = .red.withAlphaComponent(0.8)
+                        self.timeLeftToBuyLblKey.text = "Available In"
+                        self.goToHide.isHidden = true
+                    }
                 }else{
                     self.timeLeftToBuyLbl.text = Utility().formatTime(seconds: res.timeLeft ?? 0)
                     self.timeLeftToBuyLbl.textColor = UIColor(hex: "212D40")

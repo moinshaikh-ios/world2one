@@ -34,7 +34,8 @@ class AppDefault {
             if (key == "fcmToken" ||
                 key == "deviceToken" ||
                 key == "email" ||
-                key == "password"
+                key == "password" ||
+                key == "token"
                 ) {
                 //Don't Remove These keys
             }else {
@@ -52,6 +53,15 @@ class AppDefault {
                 shared.set(newValue, forKey: "token")
             }
         }
+    
+    public static var referalCode: String {
+        get {
+            return shared.string(forKey: "referalCode") ?? ""
+        }
+        set {
+            shared.set(newValue, forKey: "referalCode")
+        }
+    }
     
     public static var username: String {
         get {

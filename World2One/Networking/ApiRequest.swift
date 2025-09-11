@@ -27,16 +27,53 @@ struct RegisterRequest: APIRequest {
     var endpoint: String = "register"
     var method: HTTPMethodType = .post
     var parameters: Parameters?
-    var headers: HTTPHeaders? = ["Content-Type": "application/x-www-form-urlencoded"]
+    var headers: HTTPHeaders?
     var encoding: ParameterEncoding = URLEncoding.default
     
-    init(Username:String, Password:String, ConfirmPassword:String,AutoCreate:String) {
+    init(Username:String,
+         Password:String,
+         ConfirmPassword:String,
+         AutoCreate:String,
+         token:String,
+         referralCode: String? = nil) {  // <- NEW
+        
         if AutoCreate == "" {
-            self.parameters = ["Username": Username, "Password": Password, "ConfirmPassword":ConfirmPassword]
-        }else {
-            self.parameters = ["AutoCreate":"true"]
+            // include referralCode if present
+            if let referral = referralCode, !referral.isEmpty {
+                self.parameters = [
+                    "Username": Username,
+                    "Password": Password,
+                    "ConfirmPassword": ConfirmPassword,
+                    "ReferralCode": referral // <- NEW
+                ]
+            } else {
+                self.parameters = [
+                    "Username": Username,
+                    "Password": Password,
+                    "ConfirmPassword": ConfirmPassword
+                ]
+            }
+        } else {
+            if let referral = referralCode, !referral.isEmpty {
+                self.parameters = [
+                    "AutoCreate": "true",
+                    "ReferralCode": referral // <- NEW
+                ]
+            } else {
+                self.parameters = ["AutoCreate": "true"]
+            }
         }
         
+        if token.isEmpty {
+            self.headers = [
+                "Content-Type": "application/x-www-form-urlencoded"
+            ]
+        } else {
+            self.headers = [
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": "OAuth \(token)"
+            ]
+        }
     }
 }
 
@@ -55,9 +92,12 @@ struct OffersRequest: APIRequest {
             let resultArray = [AppDefault.groupId.joined(separator: ",")]
             self.parameters = ["PageNumber": PageNumber, "PageSize": PageSize,"GroupIDs": resultArray]
         }else if AppDefault.filterId != [] && AppDefault.groupId == []{
-            self.parameters = ["PageNumber": PageNumber, "PageSize": PageSize,"FilterIds":[AppDefault.filterId]]
+            let resultArray = [AppDefault.filterId.joined(separator: ",")]
+            self.parameters = ["PageNumber": PageNumber, "PageSize": PageSize,"FilterIds":resultArray]
         }else {
-            self.parameters = ["PageNumber": PageNumber, "PageSize": PageSize,"FilterIds":[AppDefault.filterId],"GroupIDs": [AppDefault.groupId]]
+            let resultFilterArray = [AppDefault.filterId.joined(separator: ",")]
+            let resulGrouptArray = [AppDefault.groupId.joined(separator: ",")]
+            self.parameters = ["PageNumber": PageNumber, "PageSize": PageSize,"FilterIds":resultFilterArray,"GroupIDs": resulGrouptArray]
         }
         if token == "" {
             self.headers = [
@@ -247,8 +287,20 @@ class APIManager {
         APIService.shared.request(request: request, completion: completion)
     }
     
-    func register(Username:String, Password:String, ConfirmPassword:String,AutoCreate:String, completion: @escaping (Result<RegisterDataModel, APIError>) -> Void) {
-        let request = RegisterRequest(Username: Username, Password: Password, ConfirmPassword: ConfirmPassword, AutoCreate: AutoCreate)
+    func register(Username:String,
+                  Password:String,
+                  ConfirmPassword:String,
+                  AutoCreate:String,
+                  token:String,
+                  referralCode: String? = nil, // <- NEW
+                  completion: @escaping (Result<RegisterDataModel, APIError>) -> Void) {
+        
+        let request = RegisterRequest(Username: Username,
+                                      Password: Password,
+                                      ConfirmPassword: ConfirmPassword,
+                                      AutoCreate: AutoCreate,
+                                      token: token,
+                                      referralCode: referralCode) // <- pass here
         APIService.shared.request(request: request, completion: completion)
     }
     

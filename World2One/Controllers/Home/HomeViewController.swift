@@ -16,7 +16,11 @@ class HomeViewController: UIViewController, DropdownViewDelegate {
     
     @IBOutlet weak var accountButton: UIButton!
 
-    var offersData: [OffersDataModel] = []
+    var offersData: [OffersDataModel] = [] {
+        didSet{
+            self.companiesTblV.reloadData()
+        }
+    }
     var currentPage = 1
     var isLoading = false  
     let pageSize = 40
@@ -123,12 +127,20 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = offersData[indexPath.row]
-        let vc = MagzinesViewController.getVC(.home)
-        vc.offerData = data.offers ?? []
-        vc.fullOffer = data
-        vc.headerimg = APIBaseUrl.ImgUrl + (data.imageURL ?? "")
-        vc.headerlbl = data.name
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        if AppDefault.filterId.contains("4") {
+            let vc = MagazinesDetailViewController.getVC(.home)
+            vc.key = data.offers?.last?.key
+            self.navigationController?.pushViewController(vc, animated: true)
+        }else {
+            let vc = MagzinesViewController.getVC(.home)
+            vc.offerData = data.offers ?? []
+            vc.fullOffer = data
+            vc.headerimg = APIBaseUrl.ImgUrl + (data.imageURL ?? "")
+            vc.headerlbl = data.name
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -162,7 +174,6 @@ extension HomeViewController {
                     self.notFoundLbl.isHidden = !self.offersData.isEmpty
 //                    self.myWorldLbl.text = AppDefault.filterArray2?.title ?? "My World Only"
                     self.companiesLbl.text = "\(self.offersData.count) Companies"
-                    self.companiesTblV.reloadData()
                     
                 case .failure(let error):
                     Utility.showWarningAlert(message: "\(error)")

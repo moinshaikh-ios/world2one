@@ -91,7 +91,7 @@ class RegisterViewController: UIViewController {
 extension RegisterViewController {
     
     func RegisterApi(Username:String,Password:String,ConfirmPassword:String,AutoCreate:String) {
-        APIManager.shared.register(Username: Username, Password: Password, ConfirmPassword: ConfirmPassword, AutoCreate: AutoCreate) { result in
+        APIManager.shared.register(Username: Username, Password: Password, ConfirmPassword: ConfirmPassword, AutoCreate: AutoCreate, token: AppDefault.accessToken) { result in
             switch result {
             case .success(let response):
                 if response.success == false {

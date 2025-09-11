@@ -17,6 +17,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        
+        if UserDefaults.standard.bool(forKey: "HasLaunchedOnce") == false {
+               UserDefaults.standard.set(true, forKey: "HasLaunchedOnce")
+               if let url = URL(string: "https://www.world2one.com/universallink.html") {
+                   DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                       UIApplication.shared.open(url)
+                   }
+               }
+           }
+        
       
 //        AppDefault.filterId = []
 //        AppDefault.groupId = []
@@ -52,31 +63,77 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                      continue userActivity: NSUserActivity,
                      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if let url = userActivity.webpageURL {
-            deepLinkAPi(LinkPath: url.absoluteString)
+            if AppDefault.referalCode != "" {
+                RegisterApi(Username: "", Password: "", ConfirmPassword: "", AutoCreate: "true", referralCode: AppDefault.referalCode, onBoard: false)
+            }
         }
         return true
     }
     
-    func deepLinkAPi(LinkPath: String) {
-        APIManager.shared.deepLink(LinkPath: LinkPath){ result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let response):
-                    Utility.showWarningAlert(message: "Group has been successfully added")
-
-                    if response.modelList?.first?.accessToken != nil {
-                        AppDefault.currentUser = response.modelList?.first
-                        AppDefault.accessToken = response.modelList?.first?.accessToken ?? ""
-                        AppDefault.username = response.modelList?.first?.username ?? ""
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+       
+        let token = url.host ?? ""
+            if !token.isEmpty {
+                AppDefault.referalCode = token
+                RegisterApi(Username: "", Password: "", ConfirmPassword: "", AutoCreate: "true",referralCode: token, onBoard: true)
+            } else {
+                print("No referral token")
+            }
+   
+        return true
+    }
+    
+    
+    func RegisterApi(Username:String,Password:String,ConfirmPassword:String,AutoCreate:String,referralCode:String,onBoard:Bool) {
+        APIManager.shared.register(Username: Username, Password: Password, ConfirmPassword: ConfirmPassword, AutoCreate: AutoCreate, token: AppDefault.accessToken,referralCode: referralCode) { result in
+            switch result {
+            case .success(let response):
+                if response.success == false {
+                    Utility.showWarningAlert(message: response.message ?? "")
+                }else {
+                    AppDefault.currentUser = response.registerData
+                    AppDefault.accessToken = response.registerData?.accessToken ?? ""
+                    AppDefault.username = response.registerData?.username ?? ""
+                    if onBoard == true {
                         self.GotoOnBoard()
                     }
-                    
-                case .failure(let error):
-                    Utility.showWarningAlert(message: "\(error)")
                 }
+            case .failure(let error):
+                Utility.showWarningAlert(message:"\(error)")
             }
         }
     }
+    
+    
+//    func deepLinkAPi(LinkPath: String) {
+//        APIManager.shared.deepLink(LinkPath: LinkPath){ result in
+//            DispatchQueue.main.async {
+//                switch result {
+//                case .success(let response):
+//                    
+//                    guard response.result ?? false else {
+//                           // status == false → exit here
+//                           print("Status is false, exiting function")
+//                           return
+//                       }
+//                    
+//                    Utility.showWarningAlert(message: "Group has been successfully added")
+//
+//                    if response.modelList?.first?.accessToken != nil {
+//                        AppDefault.currentUser = response.modelList?.first
+//                        AppDefault.accessToken = response.modelList?.first?.accessToken ?? ""
+//                        AppDefault.username = response.modelList?.first?.username ?? ""
+//                        self.GotoOnBoard()
+//                    }
+//                    
+//                case .failure(let error):
+//                    Utility.showWarningAlert(message: "\(error)")
+//                }
+//            }
+//        }
+//    }
     
     
     func GotoLogin() {

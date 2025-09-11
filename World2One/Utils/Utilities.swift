@@ -98,7 +98,7 @@ class Utility {
 
         if let date = inputFormatter.date(from: dateString) {
             let outputFormatter = DateFormatter()
-            outputFormatter.dateFormat = "MMM dd, yy" // Desired format: Jan 22, 25
+            outputFormatter.dateFormat = "MMM dd" // Desired format: Jan 22, 25
             return outputFormatter.string(from: date)
         }
         
