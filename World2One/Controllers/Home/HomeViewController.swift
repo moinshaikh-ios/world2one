@@ -130,7 +130,9 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         
         if AppDefault.filterId.contains("4") {
             let vc = MagazinesDetailViewController.getVC(.home)
-            vc.key = data.offers?.last?.key
+            if let offer = data.offers?.first(where: { $0.name == data.offers?.first?.name ?? "" }) {
+                vc.key = offer.key
+            }
             self.navigationController?.pushViewController(vc, animated: true)
         }else {
             let vc = MagzinesViewController.getVC(.home)
