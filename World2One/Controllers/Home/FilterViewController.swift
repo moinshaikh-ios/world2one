@@ -157,7 +157,7 @@ extension FilterViewController {
                 if res.result == true {
                     Utility.showWarningAlert(message: "Group Successfully Deleted")
                 }
-                self.browseGroupTblV.reloadData()
+                self.filterMenuApi(token: AppDefault.accessToken)
             case .failure(let error):
                 Utility.showWarningAlert(message: "\(error)")
             }

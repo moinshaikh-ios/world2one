@@ -63,9 +63,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                      continue userActivity: NSUserActivity,
                      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if let url = userActivity.webpageURL {
-            if AppDefault.referalCode != "" {
-                RegisterApi(Username: "", Password: "", ConfirmPassword: "", AutoCreate: "true", referralCode: AppDefault.referalCode, onBoard: false)
-            }
+//                RegisterApi(Username: "", Password: "", ConfirmPassword: "", AutoCreate: "true", referralCode: AppDefault.referalCode, onBoard: false)
+            
+            deepLinkAPi(LinkPath: url.absoluteString)
         }
         return true
     }
@@ -107,33 +107,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     
-//    func deepLinkAPi(LinkPath: String) {
-//        APIManager.shared.deepLink(LinkPath: LinkPath){ result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success(let response):
-//                    
-//                    guard response.result ?? false else {
-//                           // status == false → exit here
-//                           print("Status is false, exiting function")
-//                           return
-//                       }
-//                    
-//                    Utility.showWarningAlert(message: "Group has been successfully added")
-//
-//                    if response.modelList?.first?.accessToken != nil {
-//                        AppDefault.currentUser = response.modelList?.first
-//                        AppDefault.accessToken = response.modelList?.first?.accessToken ?? ""
-//                        AppDefault.username = response.modelList?.first?.username ?? ""
-//                        self.GotoOnBoard()
-//                    }
-//                    
-//                case .failure(let error):
-//                    Utility.showWarningAlert(message: "\(error)")
-//                }
-//            }
-//        }
-//    }
+    func deepLinkAPi(LinkPath: String) {
+        APIManager.shared.deepLink(LinkPath: LinkPath){ result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    
+                    guard response.result ?? false else {
+                           // status == false → exit here
+                           print("Status is false, exiting function")
+                           return
+                       }
+                    
+                    Utility.showWarningAlert(message: "Group has been successfully added")
+
+                    if response.modelList?.first?.accessToken != nil {
+                        AppDefault.currentUser = response.modelList?.first
+                        AppDefault.accessToken = response.modelList?.first?.accessToken ?? ""
+                        AppDefault.username = response.modelList?.first?.username ?? ""
+                        self.GotoOnBoard()
+                    }
+                    
+                case .failure(let error):
+                    Utility.showWarningAlert(message: "\(error)")
+                }
+            }
+        }
+    }
     
     
     func GotoLogin() {
