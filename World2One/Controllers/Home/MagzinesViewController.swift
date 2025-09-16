@@ -127,8 +127,11 @@ extension MagzinesViewController {
                 Utility.showWarningAlert(message:res.resultDescription ?? "") {
                     self.navigationController?.popViewController(animated: true)
                 }
-            case .failure(let error):
-                Utility.showWarningAlert(message:"\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
             }
         }
     }
@@ -137,7 +140,6 @@ extension MagzinesViewController {
         APIManager.shared.Marchent(Key: Key, token: token){ result in
             switch result {
             case .success(let res):
-             print(res)
                 self.isLinked = res.isLinked ?? false
                 if res.isLinked == true {
                     self.removeFromWorldBtnLbl.text = "Remove From My World"
@@ -148,8 +150,11 @@ extension MagzinesViewController {
                 self.profileImage.pLoadImage(url: APIBaseUrl.ImgUrl + (res.imageUrl1 ?? ""))
                 self.profileDescription.text = res.description
 
-            case .failure(let error):
-                Utility.showWarningAlert(message:"\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
             }
         }
     }

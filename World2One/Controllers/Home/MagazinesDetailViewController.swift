@@ -148,8 +148,11 @@ extension MagazinesDetailViewController {
                 self.termsLbl.text = res.terms
                 self.Mid = res.merchant?.key ?? ""
                 self.marchentApi(Key: res.merchant?.key ?? "", token: AppDefault.accessToken)
-            case .failure(let error):
-                Utility.showWarningAlert(message:"\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
             }
         }
     }
@@ -165,7 +168,7 @@ extension MagazinesDetailViewController {
                     self.removeFromWorldBtnLbl.text = "Add To My World"
                 }
             case .failure(let error):
-                Utility.showWarningAlert(message:"\(error)")
+                Utility.showWarningAlert(message:"\(error.message)")
             }
         }
     }
@@ -175,8 +178,11 @@ extension MagazinesDetailViewController {
             switch result {
             case .success(let res):
                 print(res)
-            case .failure(let error):
-                Utility.showWarningAlert(message:"\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
             }
         }
     }
@@ -188,8 +194,11 @@ extension MagazinesDetailViewController {
                 Utility.showWarningAlert(message:res.resultDescription ?? "") {
                     self.navigationController?.popViewController(animated: true)
                 }
-            case .failure(let error):
-                Utility.showWarningAlert(message:"\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
             }
         }
     }

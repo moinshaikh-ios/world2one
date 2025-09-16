@@ -91,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             switch result {
             case .success(let response):
                 if response.success == false {
-                    Utility.showWarningAlert(message: response.message ?? "")
+                    Utility.showWarningAlert(message: "Sucess Message: \(response.message ?? "")" )
                 }else {
                     AppDefault.currentUser = response.registerData
                     AppDefault.accessToken = response.registerData?.accessToken ?? ""
@@ -100,8 +100,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         self.GotoOnBoard()
                     }
                 }
-            case .failure(let error):
-                Utility.showWarningAlert(message:"\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
             }
         }
     }
@@ -128,8 +130,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         self.GotoOnBoard()
                     }
                     
-                case .failure(let error):
-                    Utility.showWarningAlert(message: "\(error)")
+                case .failure(let apiError):
+                    if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
                 }
             }
         }
@@ -192,8 +197,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 case .success(let res):
                   print(res)
                     
-                case .failure(let error):
-                    Utility.showWarningAlert(message: "\(error)")
+                case .failure(let apiError):
+                    if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
                 }
             }
         }

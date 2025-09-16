@@ -144,8 +144,11 @@ extension FilterViewController {
                 self.browseFilterTblV.reloadData()
                 self.browseGroupTblV.reloadData()
                 
-            case .failure(let error):
-                Utility.showWarningAlert(message: "\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
             }
         }
     }
@@ -158,8 +161,11 @@ extension FilterViewController {
                     Utility.showWarningAlert(message: "Group Successfully Deleted")
                 }
                 self.filterMenuApi(token: AppDefault.accessToken)
-            case .failure(let error):
-                Utility.showWarningAlert(message: "\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
             }
         }
     }

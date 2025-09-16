@@ -177,8 +177,11 @@ extension HomeViewController {
 //                    self.myWorldLbl.text = AppDefault.filterArray2?.title ?? "My World Only"
                     self.companiesLbl.text = "\(self.offersData.count) Companies"
                     
-                case .failure(let error):
-                    Utility.showWarningAlert(message: "\(error)")
+                case .failure(let apiError):
+                    if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
                 }
             }
         }

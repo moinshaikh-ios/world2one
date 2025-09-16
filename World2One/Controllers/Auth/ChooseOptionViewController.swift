@@ -61,7 +61,7 @@ extension ChooseOptionViewController {
             switch result {
             case .success(let response):
                 if response.success == false {
-                    Utility.showWarningAlert(message: response.message ?? "")
+                    Utility.showWarningAlert(message: "Sucess Message: \(response.message ?? "")" )
                 }else {
                     AppDefault.currentUser = response.registerData
                     AppDefault.accessToken = response.registerData?.accessToken ?? ""
@@ -69,8 +69,11 @@ extension ChooseOptionViewController {
                     let vc = OnBoardingViewController.getVC(.onboard)
                     self.navigationController?.pushViewController(vc, animated: true)
                 }
-            case .failure(let error):
-                Utility.showWarningAlert(message:"\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
             }
         }
     }

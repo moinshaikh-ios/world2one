@@ -566,7 +566,6 @@ extension UIImageView{
             var comps = URLComponents(url: http, resolvingAgainstBaseURL: false)!
             comps.scheme = "https"
             let https = comps.url!
-            print(https)
             self.kf.indicatorType = .none
             self.kf.setImage(with: http,placeholder: #imageLiteral(resourceName: "placeHolder"))
         }else{
@@ -579,7 +578,6 @@ extension UIImageView{
             var comps = URLComponents(url: http, resolvingAgainstBaseURL: false)!
             comps.scheme = "https"
             let https = comps.url!
-            print(https)
             self.kf.indicatorType = .activity
             self.kf.setImage(with: http,placeholder: #imageLiteral(resourceName: "placeHolder"))
         }else{
@@ -592,7 +590,6 @@ extension UIImageView{
             var comps = URLComponents(url: http, resolvingAgainstBaseURL: false)!
             comps.scheme = "https"
             let https = comps.url!
-            print(https)
             self.kf.indicatorType = .activity
             self.kf.setImage(with: http,placeholder: #imageLiteral(resourceName: "placeHolder2"))
         }else{
@@ -605,7 +602,6 @@ extension UIImageView{
             var comps = URLComponents(url: http, resolvingAgainstBaseURL: false)!
             comps.scheme = "https"
             let https = comps.url!
-            print(https)
 
             self.kf.setImage(with: http)
 

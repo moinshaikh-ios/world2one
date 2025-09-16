@@ -90,8 +90,11 @@ extension LoginViewController {
                 AppDefault.username = response.username ?? ""
                 let vc = HomeViewController.getVC(.home)
                 self.navigationController?.pushViewController(vc, animated: true)
-            case .failure(let error):
-                Utility.showWarningAlert(message:"\(error)")
+            case .failure(let apiError):
+                if apiError.message != "The network connection was lost." {
+                    Utility.showWarningAlert(message:"\(apiError.message)")
+                }
+
             }
         }
     }
