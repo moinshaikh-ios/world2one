@@ -82,11 +82,11 @@ class HomeViewController: UIViewController, DropdownViewDelegate {
                    appDelegate.GotoLogin()
                }, firstBtnTitle: "YES")
            }else if title == "Terms of Service"{
-               if let url = URL(string: "https://www.world2one.com/terms/") {
+               if let url = URL(string: "https://www.w2oapp.com/terms/") {
                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
                }
            }else if title == "Privacy Policy" {
-               if let url = URL(string: "https://www.world2one.com/privacy/") {
+               if let url = URL(string: "https://www.w2oapp.com/privacy-policy/") {
                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
                }
            }

@@ -476,11 +476,11 @@ extension UITextView: UITextViewDelegate {
     // Handle tap on links in the text view
     public func textView(_ textView: UITextView, shouldInteractWith url: URL, in characterRange: NSRange) -> Bool {
         if url.absoluteString == "terms" {
-            if let url = URL(string: "https://www.world2one.com/terms/") {
+            if let url = URL(string: "https://www.w2oapp.com/terms/") {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         } else if url.absoluteString == "privacy" {
-            if let url = URL(string: "https://www.world2one.com/privacy/") {
+            if let url = URL(string: "https://www.w2oapp.com/privacy-policy/") {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }else if url.absoluteString == "register" {

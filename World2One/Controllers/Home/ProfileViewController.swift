@@ -34,12 +34,12 @@ class ProfileViewController: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func termAndServiceBtnTapped(_ sender: UIButton) {
-        if let url = URL(string: "https://www.world2one.com/terms/") {
+        if let url = URL(string: "https://www.w2oapp.com/terms/") {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
     @IBAction func privacyPolicyBtnTapped(_ sender: UIButton) {
-        if let url = URL(string: "https://www.world2one.com/privacy/") {
+        if let url = URL(string: "https://www.w2oapp.com/privacy-policy/") {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }

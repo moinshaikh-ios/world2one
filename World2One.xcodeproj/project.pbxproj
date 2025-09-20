@@ -900,7 +900,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.58;
+				MARKETING_VERSION = 2.0.59;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dynamicmethods.world2one;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -938,7 +938,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.58;
+				MARKETING_VERSION = 2.0.59;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dynamicmethods.world2one;
 				PRODUCT_NAME = "$(TARGET_NAME)";
